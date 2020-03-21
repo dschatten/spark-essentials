@@ -13,7 +13,7 @@ This repository contains the code we wrote during  [Rock the JVM's Spark Essenti
 chmod +x build-images.sh
 ./build-images.sh
 ```
-- when prompted to start the Spark cluster, go to the `spark-cluster` folder and run `docker-compose up --scale spark-worker=3` to spin up the Spark containers
+- when prompted to start the Spark cluster, go to the `spark-cluster` folder and run `sudo docker-compose up --scale spark-worker=3` to spin up the Spark containers
 
 
 ### How to start
