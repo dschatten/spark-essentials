@@ -15,6 +15,13 @@ chmod +x build-images.sh
 ```
 - when prompted to start the Spark cluster, go to the `spark-cluster` folder and run `sudo docker-compose up --scale spark-worker=3` to spin up the Spark containers
 
+-now, spin up another terminal window and navigate to the top-level spark-essentials directory.    Run the psql shell script `sudo ./psql.sh`
+
+-next, open up another term window and navigate to sparkessentials/spark-cluster.    Make the build-images.sh script an executable by running `chmod +x build-images.sh`
+
+-now run `sudo ./build-images.sh`
+
+-now run `sudo docker-compose up --scale spark-worker=3`.    This sets up a docker-based spark cluster. 
 
 ### How to start
 
