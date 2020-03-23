@@ -1,0 +1,4 @@
+{"patient_id":  1234, "disease":  "MI", "outcome": "good", "date_assessed": "1/1/2020"}
+{"patient_id":  12345, "disease":  "MI", "outcome": "good", "date_assessed": "1/1/2020"}
+{"patient_id":  12346, "disease":  "RHEUM", "outcome": "good", "date_assessed": "1/1/2020"}
+{"patient_id":  12347, "disease":  "ORTH", "outcome": "bad", "date_assessed": "1/2/2020"}

@@ -6,15 +6,18 @@ import org.apache.spark.sql.types._
 object DataFramesBasics extends App {
 
   // creating a SparkSession
+  //DRS - you need a SparkSession for most things
+
   val spark = SparkSession.builder()
     .appName("DataFrames Basics")
-    .config("spark.master", "local")
+    .config("spark.master", "local")      //You can add multiple config calls if you like
     .getOrCreate()
 
   // reading a DF
+  //DRS - See comment on automatically inferring DataFrame schema
   val firstDF = spark.read
     .format("json")
-    .option("inferSchema", "true")
+    .option("inferSchema", "true")    //DRS - AUTOMATICALLY INFERRING THE SCHEMA CAN SCREW THINGS UP
     .load("src/main/resources/data/cars.json")
 
   // showing a DF
@@ -28,6 +31,8 @@ object DataFramesBasics extends App {
   val longType = LongType
 
   // schema
+  //DRS - this is if you want to manually define the schema.
+  //DRS - in practice, Spark can infer the schema as it has above, but it might screw it up
   val carsSchema = StructType(Array(
     StructField("Name", StringType),
     StructField("Miles_per_Gallon", DoubleType),
@@ -44,13 +49,14 @@ object DataFramesBasics extends App {
   val carsDFSchema = firstDF.schema
 
   // read a DF with your schema
+  //DRS - Here we pass in our own schema so it is not inferred
   val carsDFWithSchema = spark.read
     .format("json")
     .schema(carsDFSchema)
     .load("src/main/resources/data/cars.json")
 
   // create rows by hand
-  val myRow = Row("chevrolet chevelle malibu",18,8,307,130,3504,12.0,"1970-01-01","USA")
+  val myRow = Row("chevrolet chevelle malibu",18,8,307,130,3504,12.0,"1970-01-01","USA")   //Can pass in whatever data you want, rows can contain anything.
 
   // create DF from tuples
   val cars = Seq(
@@ -104,4 +110,33 @@ object DataFramesBasics extends App {
     .load("src/main/resources/data/movies.json")
   moviesDF.printSchema()
   println(s"The Movies DF has ${moviesDF.count()} rows")
+
+
+  //DRS - Manually create some clinical data
+  val clinicalData = Seq(
+    (1234, "MI", "good", "1/1/2020"),
+    (12345, "MI", "bad", "1/1/2020"),
+    (123456, "RHEUM", "good", "1/2/2020")
+  )
+
+  var clinicalDataDF = clinicalData.toDF(colNames = "patient_id", "disease", "outcome", "date_assessed")
+  println(clinicalDataDF)
+
+  //DRS - Create some clinical data from a JSON file with schema
+  val clinicalSchema = StructType(Array(
+    StructField("patient_id", LongType),
+    StructField("disease", StringType),
+    StructField("outcome", StringType),
+    StructField("date_assessed", DateType),
+  ))
+
+  val clinicalDataDFWithSchema = spark.read
+    .format("json")
+    .schema(clinicalSchema)
+    .load("src/main/resources/data/clinicalData.json")
+
+  println("Clinical Data With Schema: ")
+  clinicalDataDFWithSchema.show()
+  clinicalDataDFWithSchema.printSchema()
+  clinicalDataDFWithSchema.take(10).foreach(println)
 }
