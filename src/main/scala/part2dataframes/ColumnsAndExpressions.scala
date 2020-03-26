@@ -17,7 +17,8 @@ object ColumnsAndExpressions extends App {
   // Columns
   val firstColumn = carsDF.col("Name")
 
-  // selecting (projecting)
+  // selecting (projecting) - this is called a "PROJECTION"
+  //DRS - This creates a new DataFrame.    Remember, DataFrames are immutable.
   val carNamesDF = carsDF.select(firstColumn)
 
   // various select methods
@@ -63,7 +64,7 @@ object ColumnsAndExpressions extends App {
   // remove a column
   carsWithColumnRenamed.drop("Cylinders", "Displacement")
 
-  // filtering
+  // filtering - note that equals is === and not equals is =!= so that it doesn't conflict with standard scala operators
   val europeanCarsDF = carsDF.filter(col("Origin") =!= "USA")
   val europeanCarsDF2 = carsDF.where(col("Origin") =!= "USA")
   // filtering with expression strings
@@ -89,6 +90,28 @@ object ColumnsAndExpressions extends App {
     *
     * Use as many versions as possible
     */
+
+  val drsMoviesDF = spark.read
+    .option("inferSchema", "true")
+    .json("src/main/resources/data/movies.json")
+
+
+  val drsMoviesSubsetDF = drsMoviesDF.select(
+    col("Title"),
+    col("US_Gross"),
+    expr("Worldwide_Gross"),
+    expr("US_DVD_Sales")
+  ).withColumn(
+    "Total_Profit", col("US_Gross") + col("Worldwide_Gross")
+  )
+      //  val carsWithKg3DF = carsDF.withColumn("Weight_in_kg_3", col("Weight_in_lbs") / 2.2)
+  println("Dave's New Movies DF")
+  drsMoviesSubsetDF.show()
+
+  println("Dave's comedies with IMDB rating > 6")
+  val drsMoviesBestDF = drsMoviesDF.filter(col("Major_Genre") === "Comedy").filter(col("IMDB_Rating") > 6)
+  drsMoviesBestDF.show()
+
 
   val moviesDF = spark.read.option("inferSchema", "true").json("src/main/resources/data/movies.json")
   moviesDF.show()

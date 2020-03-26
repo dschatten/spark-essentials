@@ -40,7 +40,7 @@ object DataSources extends App {
   val carsDFWithOptionMap = spark.read
     .format("json")
     .options(Map(
-      "mode" -> "failFast",
+      "mode" -> "failFast",    //DRS - What do you do if there's a row with bad data?  "failFast", "permissive", "dropMalformed"
       "path" -> "src/main/resources/data/cars.json",
       "inferSchema" -> "true"
     ))
@@ -77,8 +77,8 @@ object DataSources extends App {
     .schema(stocksSchema)
     .option("dateFormat", "MMM dd YYYY")
     .option("header", "true")
-    .option("sep", ",")
-    .option("nullValue", "")
+    .option("sep", ",")    //DRS - Specify the separator for this particular file type
+    .option("nullValue", "")  //DRS - What to use in case of null values; CSV doesn't have null values
     .csv("src/main/resources/data/stocks.csv")
 
   // Parquet
