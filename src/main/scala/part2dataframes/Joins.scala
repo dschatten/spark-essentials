@@ -44,7 +44,7 @@ object Joins extends App {
 
 
   // things to bear in mind
-  // guitaristsBandsDF.select("id", "band").show // this crashes
+  // guitaristsBandsDF.select("id", "band").show // this crashes - it's not sure which column this is referring to
 
   // option 1 - rename the column on which we are joining
   guitaristsDF.join(bandsDF.withColumnRenamed("id", "band"), "band")
