@@ -41,8 +41,13 @@ object ComplexTypes extends App {
     .option("header", "true")
     .load("src/main/resources/data/stocks.csv")
 
+  //First date format used in the 'date' column of stocks.csv
   val stocksDFWithDates = stocksDF
     .withColumn("actual_date", to_date(col("date"), "MMM dd yyyy"))
+
+  //DRS - Seems he never provided a solution to the rest of this problem,
+  //but the idea is to parse the file more than once, using different date formats
+  //then union them together
 
   // Structures
 

@@ -16,6 +16,7 @@ object ManagingNulls extends App {
 
 
   // select the first non-null value
+  //Between Rotten_Tomatoes_Rating and IMDB_Rating columns
   moviesDF.select(
     col("Title"),
     col("Rotten_Tomatoes_Rating"),
@@ -28,12 +29,16 @@ object ManagingNulls extends App {
 
   // nulls when ordering
   moviesDF.orderBy(col("IMDB_Rating").desc_nulls_last)
+  moviesDF.orderBy(col("IMDB_Rating").desc_nulls_first)
 
   // removing nulls
   moviesDF.select("Title", "IMDB_Rating").na.drop() // remove rows containing nulls
 
   // replace nulls
+  //This will replace nulls (na function) with 0 on those two specified columns
   moviesDF.na.fill(0, List("IMDB_Rating", "Rotten_Tomatoes_Rating"))
+
+  //This fill overload takes a map with operations of what to do in the null (na) cases
   moviesDF.na.fill(Map(
     "IMDB_Rating" -> 0,
     "Rotten_Tomatoes_Rating" -> 10,
