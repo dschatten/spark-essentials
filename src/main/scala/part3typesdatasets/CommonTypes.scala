@@ -33,6 +33,8 @@ object CommonTypes extends App {
   // negations
   moviesWithGoodnessFlagsDF.where(not(col("good_movie")))
 
+  moviesWithGoodnessFlagsDF.show()
+
   // Numbers
   // math operators
   val moviesAvgRatingsDF = moviesDF.select(col("Title"), (col("Rotten_Tomatoes_Rating") / 10 + col("IMDB_Rating")) / 2)
@@ -73,7 +75,18 @@ object CommonTypes extends App {
     *   - regexes
     */
 
+  def getDavesCarNames: List[String] = List("volkswagen", "audi", "saab", "ford", "chevy")
   def getCarNames: List[String] = List("Volkswagen", "Mercedes-Benz", "Ford")
+
+  //version 1 - regex
+  val drsRegexString = getDavesCarNames.mkString("|") //"volkswagen|audi|saab|ford|chevy"
+  val drsDF = carsDF.select(
+    col("Name"),
+    regexp_extract(col("Name"), drsRegexString, 0).as("regex_extract")
+  ).where(col("regex_extract") =!= "").drop("regex_extract")
+
+  println("Dave's DF: ")
+  println(drsDF.show())
 
   // version 1 - regex
   val complexRegex = getCarNames.map(_.toLowerCase()).mkString("|") // volskwagen|mercedes-benz|ford
@@ -87,6 +100,5 @@ object CommonTypes extends App {
   val carNameFilters = getCarNames.map(_.toLowerCase()).map(name => col("Name").contains(name))
   val bigFilter = carNameFilters.fold(lit(false))((combinedFilter, newCarNameFilter) => combinedFilter or newCarNameFilter)
   carsDF.filter(bigFilter).show
-
 
 }
