@@ -50,7 +50,7 @@ object ManagingNulls extends App {
     "Title",
     "IMDB_Rating",
     "Rotten_Tomatoes_Rating",
-    "ifnull(Rotten_Tomatoes_Rating, IMDB_Rating * 10) as ifnull", // same as coalesce
+    "ifnull(Rotten_Tomatoes_Rating, IMDB_Rating * 10) as ifnull", // same as coalesce - returns Rotten_Tomatoes if it's not null, otherwise IMDB_Rating * 10
     "nvl(Rotten_Tomatoes_Rating, IMDB_Rating * 10) as nvl", // same
     "nullif(Rotten_Tomatoes_Rating, IMDB_Rating * 10) as nullif", // returns null if the two values are EQUAL, else first value
     "nvl2(Rotten_Tomatoes_Rating, IMDB_Rating * 10, 0.0) as nvl2" // if (first != null) second else third
