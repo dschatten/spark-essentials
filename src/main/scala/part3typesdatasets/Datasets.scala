@@ -115,11 +115,9 @@ object Datasets extends App {
         guitarsDS.col("id")), joinType = "outer").show()
 
 
-
-  /*
-  guitarPlayersDS
-    .joinWith(guitarsDS, array_contains(guitarPlayersDS.col("guitars"), guitarsDS.col("id")), "outer")
-    .show()
+//  guitarPlayersDS
+//    .joinWith(guitarsDS, array_contains(guitarPlayersDS.col("guitars"), guitarsDS.col("id")), "outer")
+//    .show()
 
   // Grouping DS
 
