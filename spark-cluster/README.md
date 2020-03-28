@@ -53,6 +53,23 @@ The final step to create your test cluster will be to run the compose file:
 ```sh
 docker-compose up --scale spark-worker=3
 ```
+## If Starting the Spark SQL Shell (Lecture 20 - SPark as a "database" with Spark SQL Shell)
+Note: For this command, open a new terminal window.   Go to the last terminal window and 
+find the name of the spark master - something like 'spark-cluster_spark-master_1'.  Paste
+that name into the following command and run it: 
+
+```sudo docker exec -it spark-cluster_spark-master_1 bash```
+
+Next, 
+
+```cd spark```
+
+ ```./bin/spark-sql```
+ 
+ This should have launched the spark-sql shell.   Now you can execute sql-like commands. 
+
+
+
 
 ## Validate your cluster
 
